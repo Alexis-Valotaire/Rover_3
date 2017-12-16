@@ -1,4 +1,4 @@
-  #include <Wire.h>
+#include <Wire.h>
 
 #define    LIDARLite_ADDRESS   0x62          // Default I2C Address of LIDAR-Lite.
 #define    RegisterMeasure     0x00          // Register to write to initiate ranging.
@@ -28,43 +28,40 @@ const int MoteurTournePin = 9; // tourne
 
 void setup()
 {
-  // Serial output
   Serial.begin(9600);
   Serial.println("< START >");
-  
-  // Servo control
   Lidar.attach(7); //Servo du LIDAR
   MoteurAvance.attach(MoteurAvancePin,1000,2000); //Servo avancer
   MoteurTourne.attach(MoteurTournePin,1000,2000); //Servo tourner
   // LIDAR control
-  Wire.begin(); // join i2c bus
+  Wire.begin(); 
 }
 
-// Get a measurement from the LIDAR Lite
+
 int lidarGetRange(void)
 {
   int val = -1;
   
-  Wire.beginTransmission((int)LIDARLite_ADDRESS); // transmit to LIDAR-Lite
-  Wire.write((int)RegisterMeasure); // sets register pointer to  (0x00)  
-  Wire.write((int)MeasureValue); // sets register pointer to  (0x00)  
-  Wire.endTransmission(); // stop transmitting
+  Wire.beginTransmission((int)LIDARLite_ADDRESS); 
+  Wire.write((int)RegisterMeasure); 
+  Wire.write((int)MeasureValue);  
+  Wire.endTransmission();
 
-  delay(20); // Wait 20ms for transmit
+  delay(20); 
 
-  Wire.beginTransmission((int)LIDARLite_ADDRESS); // transmit to LIDAR-Lite
-  Wire.write((int)RegisterHighLowB); // sets register pointer to (0x8f)
-  Wire.endTransmission(); // stop transmitting
+  Wire.beginTransmission((int)LIDARLite_ADDRESS);
+  Wire.write((int)RegisterHighLowB);
+  Wire.endTransmission(); 
 
-  delay(20); // Wait 20ms for transmit
+  delay(20); 
   
-  Wire.requestFrom((int)LIDARLite_ADDRESS, 2); // request 2 bytes from LIDAR-Lite
+  Wire.requestFrom((int)LIDARLite_ADDRESS, 2); 
 
-  if(2 <= Wire.available()) // if two bytes were received
+  if(2 <= Wire.available()) 
   {
-    val = Wire.read(); // receive high byte (overwrites previous reading)
-    val = val << 8; // shift high byte to be high 8 bits
-    val |= Wire.read(); // receive low byte as lower 8 bits
+    val = Wire.read(); 
+    val = val << 8; 
+    val |= Wire.read(); 
   }
   
   return val;
@@ -153,30 +150,6 @@ void avance(void)
        delay(1);
        } 
      }
-     /*
-     else
-     {
-      if(distance<30)
-      {
-       MoteurAvance.write(90);
-       delay(10); 
-       if(pos<=90)
-       {
-        MoteurTourne.write(140);
-        delay(8*pos-220);
-        MoteurTourne.write(90);
-        delay(10);
-       } 
-       else
-       {
-        MoteurTourne.write(40);
-        delay(-8*pos+1220);
-        MoteurTourne.write(90);
-        delay(10);
-       } 
-      }
-     }
-     */
     }
 }
 
