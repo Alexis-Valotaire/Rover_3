@@ -14,8 +14,8 @@ Servo Lidar;
 Servo MoteurAvance;
 Servo MoteurTourne;
 
-double pos = 0;         // Position of the servo (degress, [0, 180])
-double distance = 0;    // Distance measured
+double pos = 0;     
+double distance = 0;    
 int distanceIR0=0;
 int distanceIR1=0;
 int distanceIR2=0;
@@ -33,7 +33,6 @@ void setup()
   Lidar.attach(7); //Servo du LIDAR
   MoteurAvance.attach(MoteurAvancePin,1000,2000); //Servo avancer
   MoteurTourne.attach(MoteurTournePin,1000,2000); //Servo tourner
-  // LIDAR control
   Wire.begin(); 
 }
 
